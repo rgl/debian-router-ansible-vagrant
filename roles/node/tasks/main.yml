@@ -1,0 +1,26 @@
+- name: Configure the eth1 interface gateway
+  block:
+    - name: Configure the dhcp client for not setting the default gateway
+      blockinfile:
+        path: /etc/dhcp/dhclient.conf
+        block: |
+          # make sure dhcp does not set the default gateway.
+          # NB setting this to an invalid ip address has the side-effect of not
+          #    setting the default route; we set it in the interfaces file.
+          supersede routers 127.0.0.1;
+    - name: Configure the eth1 interface gateway
+      blockinfile:
+        path: /etc/network/interfaces
+        insertafter: "#VAGRANT-END"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK ETH1"
+        block: |
+          # NB we cannot specify this stanza again despite what is told in the man page.
+          #iface eth1 inet static
+                gateway {{ hostvars['router']['router_ip_address'] }}
+      register: configure_eth1
+    - name: Restart the eth1 interface
+      shell: |
+        ip route del default || true
+        ifdown eth1
+        ifup eth1
+      when: configure_eth1.changed

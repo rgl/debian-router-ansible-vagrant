@@ -1,0 +1,31 @@
+- name: Install iptables
+  apt:
+    name: iptables-persistent
+
+# NB when everything goes ok, the backstaged rules will be applied to the
+#    live system and persisted at /etc/iptables/rules.v4, which in turn,
+#    will be applied by the iptables-persistent package scripts at the
+#    next system boot.
+- name: Set the iptables rules
+  block:
+    - name: Backstage the iptables rules
+      copy:
+        src: iptables-rules-v4
+        dest: /etc/iptables/rules.v4.backstage
+    # NB this is equivalent to iptables-apply /etc/iptables/rules.v4.backstage
+    - name: Set the iptables rules
+      community.general.iptables_state:
+        state: restored
+        path: /etc/iptables/rules.v4.backstage
+      async: "{{ ansible_timeout }}"
+      poll: 0
+    # NB this is equivalent to iptables-save >/etc/iptables/rules.v4
+    - name: Persist the iptables rules
+      community.general.iptables_state:
+        state: saved
+        path: /etc/iptables/rules.v4
+
+- name: Enable IPv4 forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: 1

@@ -1,0 +1,13 @@
+- hosts: routers
+  gather_facts: no
+  become: yes
+  roles:
+    - base
+    - router
+
+- hosts: nodes
+  gather_facts: no
+  become: yes
+  roles:
+    - base
+    - node

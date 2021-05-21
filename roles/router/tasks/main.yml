@@ -20,6 +20,9 @@
         path: /etc/iptables/rules.v4.backstage
       async: "{{ ansible_timeout }}"
       poll: 0
+      # NB this is skipped when running in check mode because it requires the
+      #    backstage file.
+      when: not ansible_check_mode
     # NB this is equivalent to iptables-save >/etc/iptables/rules.v4
     - name: Persist the iptables rules
       community.general.iptables_state:

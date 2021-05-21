@@ -17,10 +17,17 @@
           # NB we cannot specify this stanza again despite what is told in the man page.
           #iface eth1 inet static
                 gateway {{ hostvars['router']['router_ip_address'] }}
-      register: configure_eth1
     - name: Restart the eth1 interface
       shell: |
+        set -euxo pipefail
+        if [ "$(ip route list default)" == 'default via {{ hostvars['router']['router_ip_address'] }} dev eth1 onlink ' ]; then
+          exit 0
+        fi
         ip route del default || true
         ifdown eth1
         ifup eth1
-      when: configure_eth1.changed
+        echo 'eth1 changed'
+      args:
+        executable: /bin/bash
+      register: restart_eth1
+      changed_when: "'eth1 changed' in restart_eth1.stdout_lines"

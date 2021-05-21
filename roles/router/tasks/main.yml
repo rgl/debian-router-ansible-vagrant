@@ -12,6 +12,7 @@
       copy:
         src: iptables-rules-v4
         dest: /etc/iptables/rules.v4.backstage
+        validate: iptables-restore --test %s
     # NB this is equivalent to iptables-apply /etc/iptables/rules.v4.backstage
     - name: Set the iptables rules
       community.general.iptables_state:

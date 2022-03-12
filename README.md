@@ -68,6 +68,6 @@ script, e.g., to capture the traffic from the `eth1` interface on each VM:
 * https://www.vagrantup.com/docs/provisioning/ansible_intro
 * https://www.vagrantup.com/docs/provisioning/ansible_common
 * https://www.vagrantup.com/docs/provisioning/ansible
-* https://docs.ansible.com/ansible-core/2.11/user_guide/playbooks.html
-* https://docs.ansible.com/ansible-core/2.11/user_guide/playbooks_best_practices.html
-* https://docs.ansible.com/ansible-core/2.11/reference_appendices/YAMLSyntax.html
+* https://docs.ansible.com/ansible-core/2.12/user_guide/playbooks.html
+* https://docs.ansible.com/ansible-core/2.12/user_guide/playbooks_best_practices.html
+* https://docs.ansible.com/ansible-core/2.12/reference_appendices/YAMLSyntax.html

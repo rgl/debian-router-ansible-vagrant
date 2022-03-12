@@ -21,7 +21,7 @@ The network is setup as:
 
 ## Usage
 
-Install the [base debian box](https://github.com/rgl/debian-vagrant).
+Install the [base debian 11 box](https://github.com/rgl/debian-vagrant).
 
 Install ansible in a python venv:
 
